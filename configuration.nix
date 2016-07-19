@@ -17,7 +17,6 @@
   boot.loader.grub.device = "/dev/sda";
 
   networking.hostName = "stefanix"; # Define your hostname.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -38,7 +37,10 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    pkgs.dmenu vim wget git rxvt_unicode chromium 
+    pkgs.dmenu2 vim wget git rxvt_unicode chromium 
+    cabal-install
+    ghc
+    vimPlugins.pathogen
   ];
 
   programs.zsh.enable = true;
@@ -48,6 +50,10 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # Graphics Drivers
+  nixpkgs.config.allowUnfree = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
@@ -56,23 +62,32 @@
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "eurosign:e";
 
-  # Enable the KDE Desktop Environment.
+  security.sudo.enable = true;
+  security.sudo.extraConfig = ''stefan ALL=(ALL) SETENV: ALL'';
+
   services.xserver.windowManager = {
     i3-gaps.enable = true;
-    default = "i3-gaps";
+   default = "i3-gaps";
   };
- 
-  services.xserver.synaptics.enable = true;
 
-  #networking.networkmanager.enable = true;
+  # services.xserver.synaptics.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.stefan = {
      shell = "/run/current-system/sw/bin/zsh";
      isNormalUser = true;
-     extraGroups = ["networkmanager"];
+     extraGroups = ["networkmanager" "wheel"];
      uid = 1000;
   };
+  users.extraUsers.codeworld = {
+     shell = "/run/current-system/sw/bin/zsh";
+     isNormalUser = true;
+     extraGroups = ["networkmanager" "wheel"];
+     uid = 1001;
+  };
+
+
+
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
 
   # The NixOS release to be compatible with for stateful data such as databases.
