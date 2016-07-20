@@ -54,7 +54,9 @@
     gcc
     cabal2nix
     # haskell.compiler.ghcjs
-   stack
+    stack
+    openjdk
+    idea.android-studio
   ];
 
   programs.zsh.enable = true;
@@ -83,7 +85,7 @@
    default = "i3-gaps";
   };
 
-  # services.xserver.synaptics.enable = true;
+  services.xserver.synaptics.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.stefan = {
