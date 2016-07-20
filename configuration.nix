@@ -37,10 +37,24 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    pkgs.dmenu2 vim wget git rxvt_unicode chromium 
+    pkgs.dmenu2 
+    vim 
+    wget 
+    git 
+    rxvt_unicode 
+    chromium 
     cabal-install
     ghc
     vimPlugins.pathogen
+    ranger
+    vlc
+    mplayer
+    nodejs
+    gimp
+    gcc
+    cabal2nix
+    # haskell.compiler.ghcjs
+   stack
   ];
 
   programs.zsh.enable = true;
@@ -51,7 +65,6 @@
   services.openssh.enable = true;
 
   # Graphics Drivers
-  nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable CUPS to print documents.
@@ -85,6 +98,24 @@
      extraGroups = ["networkmanager" "wheel"];
      uid = 1001;
   };
+
+
+
+
+nixpkgs.config = {
+
+    allowUnfree = true;
+
+    firefox = {
+     enableGoogleTalkPlugin = true;
+     enableAdobeFlash = true;
+    };
+
+    chromium = {
+     enablePepperFlash = true; 
+     enablePepperPDF = true;
+    };
+ };
 
 
 
