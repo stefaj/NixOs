@@ -57,6 +57,10 @@
     stack
     openjdk
     idea.android-studio
+    automake
+    autoconf
+    pkgs.zlib 
+    libzip
   ];
 
   programs.zsh.enable = true;
