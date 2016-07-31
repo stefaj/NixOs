@@ -13,8 +13,15 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.extraEntries = ''
+    menuentry 'Windows 7' {
+        set root='(hd2,1)'
+      chainloader +1   
+    }
+  '';
+
+
 
   networking.hostName = "stefanix"; # Define your hostname.
 
@@ -47,6 +54,8 @@
     ghc
     vimPlugins.pathogen
     ranger
+    irssi
+    scrot
     vlc
     mplayer
     nodejs
@@ -55,12 +64,17 @@
     cabal2nix
     # haskell.compiler.ghcjs
     stack
-    openjdk
-    idea.android-studio
     automake
     autoconf
     pkgs.zlib 
     libzip
+    unzip
+    emacs
+    ib-tws
+    oraclejdk8
+    patchelf
+    gradle
+    evince
   ];
 
   programs.zsh.enable = true;
@@ -84,6 +98,7 @@
   security.sudo.enable = true;
   security.sudo.extraConfig = ''stefan ALL=(ALL) SETENV: ALL'';
 
+  services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager = {
     i3-gaps.enable = true;
    default = "i3-gaps";
@@ -104,7 +119,6 @@
      extraGroups = ["networkmanager" "wheel"];
      uid = 1001;
   };
-
 
 
 
@@ -129,5 +143,10 @@ nixpkgs.config = {
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "16.03";
+
+  # Development stuff
+  # reflex platform
+  nix.trustedBinaryCaches = [ "https://nixcache.reflex-frp.org" ];
+  nix.binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
 
 }
