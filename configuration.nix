@@ -65,9 +65,12 @@
     # haskell.compiler.ghcjs
     stack
     automake
+# android stuff
+    libmtp 
+    jmtpfs
+# end android stuff
     autoconf
-    pkgs.zlib 
-    libzip
+    zlib 
     unzip
     emacs
     ib-tws
@@ -75,6 +78,21 @@
     patchelf
     gradle
     evince
+    neovim
+    mysql_jdbc
+    qt56.full
+    qtcreator
+    cudatoolkit
+    gnumake
+    file
+    pciutils
+    maven
+#    netbeans
+    inkscape
+#    mysqlWorkbench
+    texlive.combined.scheme-full
+    python27Packages.pip
+    python2
   ];
 
   programs.zsh.enable = true;
