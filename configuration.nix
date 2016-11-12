@@ -16,7 +16,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.extraEntries = ''
     menuentry 'Windows 7' {
-        set root='(hd2,1)'
+        set root='(hd0,1)'
       chainloader +1   
     }
   '';
@@ -41,12 +41,18 @@
   # Set your time zone.
   time.timeZone = "Africa/Johannesburg";
 
+  # Docker
+  virtualisation.docker.enable = true;
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     pkgs.dmenu2 
     vim 
+    aws
     wget 
+    firefox
+    samba
     git 
     rxvt_unicode 
     chromium 
@@ -60,7 +66,7 @@
     mplayer
     nodejs
     gimp
-    gcc
+    gcc6
     cabal2nix
     # haskell.compiler.ghcjs
     stack
@@ -70,11 +76,21 @@
     jmtpfs
 # end android stuff
     autoconf
+    gnum4
     zlib 
+    z3
     unzip
+    llvm
+    libtool
+    libffi
+    xsel
+    cmake
+    xclip
     emacs
+    gephi
     ib-tws
     oraclejdk8
+    oraclejre8
     patchelf
     gradle
     evince
@@ -93,6 +109,27 @@
     texlive.combined.scheme-full
     python27Packages.pip
     python2
+    ruby
+    jekyll
+    gecode
+    jabref
+    clang
+    boost
+    boost-build
+    boost_process
+    imagemagick
+    i3lock-color
+    calibre
+    python3
+    python35Packages.pip
+    python35Packages.jupyter
+    python35Packages.matplotlib
+    python35Packages.pandas
+    python35Packages.numpy
+    freetype
+    libpng
+    ntfs3g
+  
   ];
 
   programs.zsh.enable = true;
@@ -139,6 +176,46 @@
   };
 
 
+services.samba = {
+    enable = true;
+    shares = {
+      movies =
+        { path = "/mnt/media/Movies";
+          "read only" = "yes";
+          browseable = "yes";
+          "guest ok" = "yes";
+        };
+      music =
+        { path = "/mnt/media/Music";
+          "read only" = "yes";
+          browseable = "yes";
+          "guest ok" = "yes";
+        };
+      installations =
+        { path = "/mnt/media/Installations";
+          "read only" = "yes";
+          browseable = "yes";
+          "guest ok" = "yes";
+        };
+    };
+    extraConfig = ''
+    	guest account = smbguest
+    	map to guest = bad user
+    '';
+  };
+
+
+users.extraUsers.smbguest = 
+    { name = "smbguest";
+      uid  = config.ids.uids.smbguest;
+      description = "smb guest user";
+    };
+
+  networking.firewall.allowedTCPPorts = [ 445 139 80 8080 8000 ];
+  networking.firewall.allowedUDPPorts = [ 137 138 ];
+
+
+
 
 nixpkgs.config = {
 
@@ -155,7 +232,7 @@ nixpkgs.config = {
     };
  };
 
-
+  environment.variables."SSL_CERT_FILE" = "/etc/ssl/certs/ca-bundle.crt";
 
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
 
