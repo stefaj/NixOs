@@ -56,6 +56,8 @@
     git 
     rxvt_unicode 
     chromium 
+    google-chrome
+    gurobi
     cabal-install
     ghc
     vimPlugins.pathogen
@@ -66,7 +68,6 @@
     mplayer
     nodejs
     gimp
-    gcc6
     cabal2nix
     # haskell.compiler.ghcjs
     stack
@@ -80,7 +81,6 @@
     zlib 
     z3
     unzip
-    llvm
     libtool
     libffi
     xsel
@@ -95,17 +95,12 @@
     gradle
     evince
     neovim
-    mysql_jdbc
-    qt56.full
-    qtcreator
     cudatoolkit
     gnumake
     file
     pciutils
     maven
-#    netbeans
     inkscape
-#    mysqlWorkbench
     texlive.combined.scheme-full
     python27Packages.pip
     python2
@@ -113,7 +108,6 @@
     jekyll
     gecode
     jabref
-    clang
     boost
     boost-build
     boost_process
@@ -129,7 +123,16 @@
     freetype
     libpng
     ntfs3g
-  
+ # gfortran
+    gcc6
+    blas
+    liblapack
+    wpa_supplicant
+    wpa_supplicant_gui
+    wireshark
+    R
+    # teamviewer
+    wine
   ];
 
   programs.zsh.enable = true;
@@ -153,11 +156,14 @@
   security.sudo.enable = true;
   security.sudo.extraConfig = ''stefan ALL=(ALL) SETENV: ALL'';
 
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.windowManager = {
-    i3-gaps.enable = true;
-   default = "i3-gaps";
-  };
+  services.xserver.displayManager.slim.enable = true;
+  services.xserver.displayManager.slim.theme = pkgs.fetchurl {
+      url = "https://github.com/edwtjo/nixos-black-theme/archive/v1.0.tar.gz";
+      sha256 = "13bm7k3p6k7yq47nba08bn48cfv536k4ipnwwp1q1l2ydlp85r9d";
+    };
+
+  services.xserver.windowManager.i3.enable = true;
+  services.xserver.windowManager.i3.package = pkgs.i3-gaps;
 
   services.xserver.synaptics.enable = true;
 
@@ -211,8 +217,9 @@ users.extraUsers.smbguest =
       description = "smb guest user";
     };
 
-  networking.firewall.allowedTCPPorts = [ 445 139 80 8080 8000 ];
-  networking.firewall.allowedUDPPorts = [ 137 138 ];
+  networking.firewall.allowedTCPPorts = [ 445 139 80 8080 8000 10000 10001 10002 5555 5556 1111 1112];
+  networking.firewall.allowedUDPPorts = [ 137 138 10000 10001 10002];
+  networking.firewall.enable = false;
 
 
 
@@ -222,13 +229,13 @@ nixpkgs.config = {
     allowUnfree = true;
 
     firefox = {
-     enableGoogleTalkPlugin = true;
-     enableAdobeFlash = true;
+      enableGoogleTalkPlugin = true;
+      enableAdobeFlash = true;
     };
 
     chromium = {
-     enablePepperFlash = true; 
-     enablePepperPDF = true;
+#     enablePepperFlash = true; 
+#     enablePepperPDF = true;
     };
  };
 
