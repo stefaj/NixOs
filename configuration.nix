@@ -24,6 +24,7 @@
 
 
   networking.hostName = "stefanix"; # Define your hostname.
+  networking.nameservers = [ "8.8.8.8" "8.8.4.4" ];
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -42,7 +43,7 @@
   time.timeZone = "Africa/Johannesburg";
 
   # Docker
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -57,7 +58,6 @@
     rxvt_unicode 
     chromium 
     google-chrome
-    gurobi
     cabal-install
     ghc
     vimPlugins.pathogen
@@ -66,13 +66,18 @@
     scrot
     vlc
     mplayer
-    nodejs
     gimp
+    tor
+    torbrowser
+    electrum
+    monero
     cabal2nix
     # haskell.compiler.ghcjs
     stack
     automake
 # android stuff
+    androidsdk
+    android-studio
     libmtp 
     jmtpfs
 # end android stuff
@@ -106,7 +111,6 @@
     python2
     ruby
     jekyll
-    gecode
     jabref
     boost
     boost-build
@@ -120,20 +124,36 @@
     python35Packages.matplotlib
     python35Packages.pandas
     python35Packages.numpy
+    python35Packages.scikitlearn
+    python35Packages.numpy
     freetype
     libpng
     ntfs3g
- # gfortran
     gcc6
     blas
     liblapack
     wpa_supplicant
     wpa_supplicant_gui
-    wireshark
     R
-    # teamviewer
-    wine
+    monodevelop
+    mono46
+    mono-addins
+    python27Packages.ply
+    python35Packages.ply
+    ctags
+    cpuminer-multi
+    dotnetPackages.Nuget
+#.Net
+    vscode
+    coreclr
+    fsharp
+    boost
+    rustBeta.cargo
+    rustBeta.rustc
+    go
   ];
+
+  virtualisation.virtualbox.host.enable = true;
 
   programs.zsh.enable = true;
 
